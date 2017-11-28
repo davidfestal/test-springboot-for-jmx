@@ -2,6 +2,9 @@
 @Library('github.com/fabric8io/fabric8-pipeline-library@master')
 def canaryVersion = "1.0.${env.BUILD_NUMBER}"
 def utils = new io.fabric8.Utils()
+def label = "buildpod.${env.JOB_NAME}.${env.BUILD_NUMBER}".replace('-', '_').replace('/', '_')
+def envProd = utils.environmentNamespace('run')
+def stashName = ""
 mavenNode {
   checkout scm
   if (utils.isCI()){
@@ -16,6 +19,13 @@ mavenNode {
         mavenCanaryRelease {
           version = canaryVersion
         }
+      }
+      
+      stage('Rollout to Stage'){
+        kubernetesApply(environment: envStage)
+        //stash deployments
+        stashName = label
+        stash includes: '**/*.yml', name: stashName
       }
     }
   }
