@@ -4,6 +4,7 @@ def canaryVersion = "1.0.${env.BUILD_NUMBER}"
 def utils = new io.fabric8.Utils()
 def label = "buildpod.${env.JOB_NAME}.${env.BUILD_NUMBER}".replace('-', '_').replace('/', '_')
 def envProd = utils.environmentNamespace('run')
+def envStage = utils.environmentNamespace('stage')
 def stashName = ""
 mavenNode {
   checkout scm
