@@ -33,6 +33,6 @@ public class GreetingController {
     @RequestMapping("/api/greeting")
     public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) {
         String message = String.format(properties.getMessage(), name);
-        return new Greeting(message);
+        return new Greeting(message + " from David");
     }
 }
